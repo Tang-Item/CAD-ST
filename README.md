@@ -41,8 +41,9 @@ CAD-ST/
 
 ## Environment
 
-The required environment can be installed from requirements.txt.
+The code was developed with Python and PyTorch. The required dependencies can be installed using:
 
+```bash
 pip install -r requirements.txt
 
 ---

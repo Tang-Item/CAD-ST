@@ -28,19 +28,6 @@ The code was developed with Python and PyTorch. The required dependencies can be
 pip install -r requirements.txt
 ```
 
-## Repository Structure
-
-CAD-ST/
-├── herst.py          # Dataset loading and preprocessing for HER2ST and cSCC
-├── model.py          # CAD-ST model architecture
-├── train.py          # Training script
-├── predict.py        # Inference and testing script
-├── utils.py          # Utility functions and argument parser
-├── requirements.txt  # Python dependencies
-├── README.md         # Project description
-├── assets/           # Framework figure and other illustrations
-└── data/             # Dataset directory
-
 ## Datasets
 
 - Human HER2-positive breast tumor ST data https://github.com/almaan/her2st/.

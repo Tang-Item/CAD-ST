@@ -39,19 +39,6 @@ CAD-ST/
 
 ---
 
-## Environment
-
-The code was developed with Python and PyTorch. The required dependencies can be installed using:
-
-```bash
-pip install -r requirements.txt
-
----
-
-## Datasets
-Human HER2-positive breast tumor ST data https://github.com/almaan/her2st/.
-Human cutaneous squamous cell carcinoma 10x Visium data (GSE144240).
-
 
 
 

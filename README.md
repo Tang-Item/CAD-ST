@@ -1,55 +1,118 @@
 # CAD-ST
 
-CAD-ST is a deep learning framework for histology-based spatial gene expression prediction. The model integrates histological image embeddings, spatial coordinate information, context-aware Transformer modeling, distance-aware soft contrastive learning, mask-based context reconstruction, and dual-stream graph refinement to predict spatial gene expression profiles from tissue morphology and spatial structure.
+CAD-ST is a deep learning framework for spatial gene expression prediction from histological image representations and spatial transcriptomics data. The model integrates image-derived spot features, spatial coordinates, local contextual attention, distance-aware soft contrastive learning, masked reconstruction, and a dual-stream graph neural network to improve spatial gene expression reconstruction across tissue sections.
 
-The current implementation supports experiments on the HER2ST breast cancer spatial transcriptomics dataset and the human cutaneous squamous cell carcinoma cSCC spatial transcriptomics dataset.
+CAD-ST is designed for spatial transcriptomics datasets where each tissue spot is associated with gene expression profiles, spatial coordinates, and histology-derived image embeddings. The current implementation supports the HER2ST breast cancer dataset and the human cutaneous squamous cell carcinoma dataset from GSE144240.
 
----
+<img width="12930" height="7770" alt="fig 1" src="https://github.com/user-attachments/assets/d2e5a8a2-6e53-46d1-a4df-ac9e268ef4e0" />
+
 
 ## Overview
 
-Spatial transcriptomics provides gene expression measurements with spatial coordinates, but generating high-quality spatial transcriptomic profiles remains costly and experimentally demanding. CAD-ST aims to predict spatial gene expression from histological image-derived features and spatial information.
-<img width="12930" height="7770" alt="fig 1" src="https://github.com/user-attachments/assets/29c8750c-9429-4106-8b65-97c50a40f6e8" />
+The main components of CAD-ST include:
 
-The framework contains the following main components:
-
-- **Histology feature encoder** for processing pre-extracted pathology image embeddings.
-- **Gene feature encoder** for mapping spatial gene expression profiles into a latent space.
+- **Image feature encoder** for projecting histology-derived spot embeddings into the latent space.
+- **Gene encoder** for learning gene-expression latent representations.
 - **Spatial coordinate embedding** for incorporating spot-level spatial positions.
-- **Context encoder** based on Transformer blocks for modeling tissue-level contextual dependencies.
-- **Distance-aware soft contrastive learning** to align image-derived representations and gene representations under spatially smoothed supervision.
-- **Mask-based context reconstruction** to enhance robustness by reconstructing masked spatial representations.
-- **Dual-stream graph neural network** for combining physical spatial neighborhoods and semantic similarity neighborhoods.
-- **Gene prediction head** for reconstructing spatial gene expression values.
+- **Local context Transformer** for modeling neighborhood-aware spatial dependencies.
+- **Distance-aware soft contrastive learning** to align image and gene representations with spatially smoothed soft targets.
+- **Spatial block masking and reconstruction** to improve local representation robustness.
+- **Dual-stream graph neural network** to jointly model physical spatial neighborhoods and semantic feature relationships.
+- **Gene expression decoder** for reconstructing spatial gene expression profiles.
 
----
+## Environment
 
-## Project Structure
+The code was developed with Python and PyTorch. The required dependencies can be installed using:
 
-```text
-CAD-ST/
-├── herst.py              # Dataset loaders for HER2ST and cSCC
-├── model.py              # CAD-ST model, Transformer blocks, DS-GNN, and loss functions
-├── train.py              # Training script
-├── predict.py            # Testing / prediction script
-├── utils.py              # Argument parser, metric calculation, random seed utilities
-├── requirements.txt      # Python dependencies
-├── README.md             # Project description and usage instructions
-└── data/                 # Dataset directory, not included in this repository
+```bash
+pip install -r requirements.txt
+```
 
+## Repository Structure
 
+`CAD-ST/`
+`├── herst.py          # Dataset loading and preprocessing for HER2ST and cSCC`
+`├── model.py          # CAD-ST model architecture`
+`├── train.py          # Training script`
+`├── predict.py        # Inference and testing script`
+`├── utils.py          # Utility functions and argument parser`
+`├── requirements.txt  # Python dependencies`
+`├── README.md         # Project description`
+`├── assets/           # Framework figure and other illustrations`
+`└── data/             # Dataset directory`
 
+## Datasets
 
+- Human HER2-positive breast tumor ST data https://github.com/almaan/her2st/.
+- Human cutaneous squamous cell carcinoma 10x Visium data (GSE144240).
 
+## Training
 
+### Train CAD-ST on one fold
 
+For HER2ST:
 
+```
+python train.py \
+  --dataset her2st \
+  --fold 0 \
+  --no-all_folds \
+  --device_id 0 \
+  --output_dir output
+```
 
+For cSCC:
 
+```
+python train.py \
+  --dataset cSCC \
+  --fold 0 \
+  --no-all_folds \
+  --device_id 0 \
+  --output_dir output
+```
 
+### Train CAD-ST on all folds
 
+For HER2ST:
 
+```
+python train.py \
+  --dataset her2st \
+  --all_folds \
+  --device_id 0 \
+  --output_dir output
+```
 
+For cSCC:
 
+```
+python train.py \
+  --dataset cSCC \
+  --all_folds \
+  --device_id 0 \
+  --output_dir output
+```
 
+## Prediction
+
+After training, run prediction or testing using:
+
+```
+python predict.py \
+  --dataset cSCC \
+  --fold 0 \
+  --device_id 0 \
+  --output_dir output
+```
+
+or for HER2ST:
+
+```
+python predict.py \
+  --dataset her2st \
+  --fold 0 \
+  --device_id 0 \
+  --output_dir output
+```
 
